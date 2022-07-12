@@ -9,7 +9,7 @@
     "nodemon": "^2.0.16"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node api/model/server.js",
     "dev": "nodemon api/model/server.js"
   },
   "name": "divisas",
