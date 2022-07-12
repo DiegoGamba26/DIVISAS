@@ -65,7 +65,7 @@ controller.verify = (req, res) => {
     console.log(req.data);
     res.json('INFORMACIÓN SECRETA PAPI NO SEA SAPO MIJO');
 };
-controller.currency = (req,res) => {s
+controller.currency = (req,res) => {
     fetch("https://v6.exchangerate-api.com/v6/e1fb2a5953edbe689c1af854/latest/USD")
     .then(response => response.text())
     .then(result => {
