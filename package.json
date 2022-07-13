@@ -8,7 +8,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.7",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "dotenv": "^16.0.1"
   },
   "scripts": {
     "start": "node api/model/server.js",
@@ -30,6 +31,6 @@
   },
   "homepage": "https://github.com/DiegoGamba26/DIVISAS#readme",
   "devDependencies": {
-    "dotenv": "^16.0.1"
+
   }
 }
