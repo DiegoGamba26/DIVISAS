@@ -2,7 +2,6 @@ const NODE_ENV = process.env.NODE_ENV || 'production';
 require('dotenv').config({
     path: './.env'
 });
-s
 const http = require('http');
 const app = require('../../app');
 
