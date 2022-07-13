@@ -69,7 +69,7 @@ controller.currency = (req,res) => {
     fetch("https://v6.exchangerate-api.com/v6/e1fb2a5953edbe689c1af854/latest/USD")
     .then(response => response.text())
     .then(result => {
-        let a = 5* JSON.parse(result).conversion_rates.COP;
+        let a = JSON.parse(result).conversion_rates.COP;
         res.status(200).json(a);
     })
     .catch(error => console.log('error', error));
