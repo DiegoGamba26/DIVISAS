@@ -1,12 +1,23 @@
 const mysql = require('mysql');
 
 const mysqlConnection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-    dialect: mysql
+    "development": {
+        "username": process.env.DB_USER,
+        "password": process.env.DB_PASS,
+        "database": process.env.DB_NAME,
+        "host": process.env.DB_HOST,
+        "port":process.env.DB_PORT,
+        "dialect": "mysql",
+        "operatorsAliases": 0
+      },
+      "production": {
+        "username": process.env.DB_USER,
+        "password": process.env.DB_PASS,
+        "database": process.env.DB_NAME,
+        "host": process.env.DB_HOST,
+        "dialect": "mysql",
+        "operatorsAliases": 0
+      }
 });
 mysqlConnection.connect(err => {
     if (err) {
