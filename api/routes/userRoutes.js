@@ -6,7 +6,7 @@ router.post('/register', controller.register);
 router.post('/login', controller.login);
 router.post('/verify', controller.verify);
 router.get('/currency', controller.currency);
-router.post('/transaction', controller.transaction);
+router.post('/topUpBalance/:document', controller.topUpBalance);
 
 
 module.exports = router;
