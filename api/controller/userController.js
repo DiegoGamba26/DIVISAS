@@ -16,15 +16,14 @@ controller.list = (req, res) => {
 };
 controller.register = (req, res) => {
     const {
-        name, last_name, date_birth, document,
+        name, last_name,nationality, date_birth, document,
         gender, email, num, pass
     } = req.body;
-    mysqlConnection.query('INSERT INTO users SET name =?,last_name=?,date_birth=?,document=?,gender=?, email=?, num=?, pass=?', [name, last_name, date_birth, document, gender, email, num, pass], (err, rows, fields) => {
+    mysqlConnection.query('INSERT INTO users SET name =?,last_name=?, nationality=?,date_birth=?,document=?,gender=?, email=?, num=?, pass=?', [name, last_name,nationality, date_birth, document, gender, email, num, pass], (err, rows, fields) => {
         if (!err) {
             res.status(200).json("Correcto calvo");
         } else {
             res.status(400).json('HUBO UN ERROR PAPU', err);
-            console.log('HUBO UN ERROR PAPU', err);
         }
     });
 };
