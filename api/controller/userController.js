@@ -29,7 +29,7 @@ controller.register = (req, res) => {
 };
 controller.topUpBalance = (req, res) => {
     const { document } = req.params;
-    const { balance } = req.body;
+    const { balance,bank } = req.body;
     mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document],
         (err, rows, fields) => {
             if (!err) {
@@ -44,11 +44,10 @@ controller.topUpBalance = (req, res) => {
                                         let name = rows[0]["name"];
                                         let last_name = rows[0]["last_name"];
                                         let country = rows[0]["nationality"];
-                                        let id = rows[0]["id"];
                                         let id_transaction = rows[0]["id"];
                                         /*console.log(id_transaction);*/
                                         let type = "ENTRADA";
-                                        mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?,id=?', [name, last_name, country, type, balance, document, id_transaction],
+                                        mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document,bank, id_transaction],
                                             (err, rows, fields) => {
                                                 if (!err) {
                                                     res.status(200).json("Correcto calvo");
