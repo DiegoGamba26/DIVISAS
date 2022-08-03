@@ -26,6 +26,7 @@ CREATE TABLE transactions (
   last_name varchar(150),
   nationality varchar(100),
   document varchar (20),
+  bank varchar(50),
   type varchar (50),
   amount DOUBLE(18, 6),
   transaction_date datetime DEFAULT CURRENT_TIMESTAMP
