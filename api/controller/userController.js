@@ -10,26 +10,47 @@ controller.list = (req, res) => {
         if (!err) {
             res.json(rows);
         } else {
-            console.log('OCURRIÓ UN ERROR EN LA CONSULTA PÁ', err);
+            res.status(400).json('HUBO UN ERROR PAPU', err);
+        }
+    });
+};
+controller.historyTransactions = (req, res) => {
+    const id  = req.query.id;
+    mysqlConnection.query('SELECT * FROM transactions WHERE id =? ', [id], (err, rows, fields) => {
+        if (!err) {
+            res.json(rows);
+        } else {
+            console.log(err);
+            res.status(400).json('HUBO UN ERROR PAPU', err);
         }
     });
 };
 controller.register = (req, res) => {
     const {
-        name, last_name,nationality, date_birth, document,
+        name, last_name, nationality, date_birth, document,
         gender, email, num, pass
     } = req.body;
-    mysqlConnection.query('INSERT INTO users SET name =?,last_name=?, nationality=?,date_birth=?,document=?,gender=?, email=?, num=?, pass=?', [name, last_name,nationality, date_birth, document, gender, email, num, pass], (err, rows, fields) => {
-        if (!err) {
-            res.status(200).json("Correcto calvo");
-        } else {
-            res.status(400).json('HUBO UN ERROR PAPU', err);
-        }
-    });
+    mysqlConnection.query('SELECT * FROM users WHERE document =? ', [document],
+        (err, rows, fields) => {
+            if (!err) {
+                if (rows = []) {
+                    mysqlConnection.query('INSERT INTO users SET name =?,last_name=?, nationality=?,date_birth=?,document=?,gender=?, email=?, num=?, pass=?', [name, last_name, nationality, date_birth, document, gender, email, num, pass], (err, rows, fields) => {
+                        if (!err) {
+                            res.status(200).json("Correcto calvo hijueputaXD");
+                        } else {
+                            res.status(200).json("YA EXISTE ESTA CÉDULA PAPU XD");
+                        }
+                    });
+                }
+            } else {
+                res.status(400).json('HUBO UN ERROR PAPU', err);
+            }
+        });
+    /* */
 };
 controller.topUpBalance = (req, res) => {
     const { document } = req.params;
-    const { balance,bank } = req.body;
+    const { balance, bank } = req.body;
     mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document],
         (err, rows, fields) => {
             if (!err) {
@@ -40,31 +61,112 @@ controller.topUpBalance = (req, res) => {
                             mysqlConnection.query('SELECT * FROM users WHERE document =? ', [document],
                                 (err, rows, fields) => {
                                     if (!err) {
-                                        /* console.log(rows);*/
                                         let name = rows[0]["name"];
                                         let last_name = rows[0]["last_name"];
                                         let country = rows[0]["nationality"];
                                         let id_transaction = rows[0]["id"];
                                         /*console.log(id_transaction);*/
                                         let type = "ENTRADA";
-                                        mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document,bank, id_transaction],
+                                        mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document, bank, id_transaction],
                                             (err, rows, fields) => {
                                                 if (!err) {
                                                     res.status(200).json("Correcto calvo");
                                                 } else {
-                                                    console.log('OCURRIÓ UN ERROR EN LA CONSULTA PÁ', err);
+                                                    res.status(400).json('HUBO UN ERROR PAPU4', err);
                                                 }
                                             });
                                     } else {
-                                        console.log('OCURRIÓ UN ERROR EN LA CONSULTA PÁ', err);
+                                        res.status(400).json('HUBO UN ERROR PAPU3', err);
                                     }
                                 });
                         } else {
-                            console.log('OCURRIÓ UN ERROR EN LA CONSULTA PÁ', err);
+                            res.status(400).json('HUBO UN ERROR PAPU2', err);
                         }
                     });
             } else {
-                console.log('OCURRIÓ UN ERROR EN LA CONSULTA PÁ', err);
+                res.status(400).json('HUBO UN ERROR PAPU1', err);
+            }
+
+        });
+};
+controller.transfer = (req, res) => {
+    const { document } = req.params;
+    const { balance, bank, document2 } = req.body;
+    mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document],
+        (err, rows, fields) => {
+            if (!err) {
+                let result = rows[0]["balance"];
+                if (balance > result) {
+                    res.status(200).json("No hay fondos suficientes en su cuenta revise por favor perro hijueputa");
+                } else {
+                    mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document2],
+                        (err, rows, fields) => {
+                            let saldo = rows[0]["balance"];
+                            if (!err) {
+                                mysqlConnection.query('UPDATE users set balance = ? WHERE document =?', [balance + saldo, document2],
+                                    (err, rows, fields) => {
+                                        if (!err) {
+                                            const rest = result - balance;
+                                            mysqlConnection.query('UPDATE users set balance = ? WHERE document =?', [rest, document],
+                                                (err, rows, fields) => {
+                                                    if (!err) {
+                                                        mysqlConnection.query('SELECT * FROM users WHERE document =? ', [document],
+                                                            (err, rows, fields) => {
+                                                                if (!err) {
+                                                                    let name = rows[0]["name"];
+                                                                    let last_name = rows[0]["last_name"];
+                                                                    let country = rows[0]["nationality"];
+                                                                    let id_transaction = rows[0]["id"];
+                                                                    /*console.log(id_transaction);*/
+                                                                    let type = "SALIDA";
+                                                                    mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document, bank, id_transaction],
+                                                                        (err, rows, fields) => {
+                                                                            if (!err) {
+                                                                                mysqlConnection.query('SELECT * FROM users WHERE document =? ', [document2],
+                                                                                    (err, rows, fields) => {
+                                                                                        if (!err) {
+                                                                                            let name = rows[0]["name"];
+                                                                                            let last_name = rows[0]["last_name"];
+                                                                                            let country = rows[0]["nationality"];
+                                                                                            let id_transaction = rows[0]["id"];
+                                                                                            /*console.log(id_transaction);*/
+                                                                                            let type = "ENTRADA";
+                                                                                            mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document, bank, id_transaction],
+                                                                                                (err, rows, fields) => {
+                                                                                                    if (!err) {
+                                                                                                        res.status(200).json("Correcto calvo");
+                                                                                                    } else {
+                                                                                                        res.status(400).json('HUBO UN ERROR PAPU4', err);
+                                                                                                    }
+                                                                                                });
+                                                                                        } else {
+                                                                                            res.status(400).json('HUBO UN ERROR PAPU3', err);
+                                                                                        }
+                                                                                    });
+                                                                            } else {
+                                                                                res.status(400).json('HUBO UN ERROR PAPU4', err);
+                                                                            }
+                                                                        });
+                                                                } else {
+                                                                    res.status(400).json('HUBO UN ERROR PAPU3', err);
+                                                                }
+                                                            });
+                                                    }
+                                                });
+                                        }
+                                        else {
+                                            res.status(400).json('HUBO UN ERROR PAPU', err);
+                                        }
+
+                                    });
+                            } else {
+                                res.status(400).json('HUBO UN ERROR PAPU', err);
+                            }
+
+                        });
+                }
+            } else {
+                res.status(400).json('HUBO UN ERROR PAPU', err);
             }
 
         });
@@ -80,7 +182,6 @@ controller.login = (req, res) => {
 
             } else {
                 res.status(400).json({ response: false, mensaje: 'Revisa tu clave y contraseña', err });
-                console.log('USUARIO O CLAVE INCORRECTAS PAPI', err);
             }
 
         });
@@ -108,7 +209,7 @@ function verifyToken(req, res, next) {
             const content = jwt.verify(token, 'DIEGO');
             req.data = content;
         } else {
-            console.log("Algo anda mal");
+            res.status(400).json('HUBO UN ERROR PAPU', err);
         }
     }
 }
