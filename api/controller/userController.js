@@ -43,7 +43,6 @@ controller.register = (req, res) => {
                     });
                 }
             } else {
-                console.log(err);
                 res.status(400).json('HUBO UN ERROR PAPU', err);
             }
         });
