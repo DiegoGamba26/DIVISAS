@@ -26,9 +26,9 @@ controller.balance = (req, res) => {
 };
 controller.historyTransactions = (req, res) => {
     const id = req.query.id;
-    mysqlConnection.query('SELECT name,last_name,nationality,document,bank,type,amount,transaction_date FROM transactions WHERE id =? ', [id], (err, rows, fields) => {
+    mysqlConnection.query('SELECT id_transactions,name,last_name,nationality,document,bank,type,amount,transaction_date FROM transactions WHERE id =? order by id_transactions asc', [id], (err, rows, fields) => {
         if (!err) {
-            res.json(rows);
+            res.status(200).json(rows);
         } else {
             console.log(err);
             res.status(200).json('HUBO UN ERROR PAPU', err);
