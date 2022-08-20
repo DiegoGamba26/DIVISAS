@@ -183,7 +183,7 @@ controller.transfer = (req, res) => {
 };
 controller.login = (req, res) => {
     const { email, pass } = req.body;
-    mysqlConnection.query('SELECT id,rol,name,last_name FROM users WHERE email =? and pass=?', [email, pass],
+    mysqlConnection.query('SELECT id,rol,name,last_name,document FROM users WHERE email =? and pass=?', [email, pass],
         (err, rows, fields) => {
             if (err == null && rows.length > 0) {
                 jwt.sign(req.body, 'DIEGO', { expiresIn: '8h' }, (err, token) => {
