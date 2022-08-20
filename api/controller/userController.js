@@ -26,7 +26,7 @@ controller.balance = (req, res) => {
 };
 controller.historyTransactions = (req, res) => {
     const id = req.query.id;
-    mysqlConnection.query('SELECT * FROM transactions WHERE id =? ', [id], (err, rows, fields) => {
+    mysqlConnection.query('SELECT name,last_name,nationality,document,bank,type,amount,transaction_date FROM transactions WHERE id =? ', [id], (err, rows, fields) => {
         if (!err) {
             res.json(rows);
         } else {
