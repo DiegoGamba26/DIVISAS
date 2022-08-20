@@ -76,7 +76,7 @@ controller.topUpBalance = (req, res) => {
                                         let country = rows[0]["nationality"];
                                         let id_transaction = rows[0]["id"];
                                         /*console.log(id_transaction);*/
-                                        let type = "ENTRADA";
+                                        let type = "recarga";
                                         mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document, bank, id_transaction],
                                             (err, rows, fields) => {
                                                 if (!err) {
