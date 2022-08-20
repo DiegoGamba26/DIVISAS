@@ -19,6 +19,7 @@ controller.balance = (req, res) => {
     mysqlConnection.query('SELECT balance FROM users WHERE id =?', [id], (err, rows, fields) => {
         if (!err) {
             res.status(200).json(rows);
+            console.log(rows[0]["balance"]);
         } else {
             res.status(200).json('HUBO UN ERROR PAPU', err);
         }
