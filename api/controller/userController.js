@@ -18,7 +18,7 @@ controller.balance = (req, res) => {
     const id = req.params.id;
     mysqlConnection.query('SELECT balance FROM users WHERE id =?', [id], (err, rows, fields) => {
         if (!err) {
-            res.status(200).json(rows[0]["balance"]);
+            res.status(200).json(rows[0]);
         } else {
             res.status(200).json('HUBO UN ERROR PAPU', err);
         }
