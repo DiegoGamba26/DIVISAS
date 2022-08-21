@@ -6,7 +6,7 @@ router.get('/historyTransactions', controller.historyTransactions);
 router.post('/register', controller.register);
 router.post('/login', controller.login);
 router.post('/verify', controller.verify);
-router.get('/currency', controller.currency);
+router.get('/currency_list/:id', controller.currency_list);
 router.post('/topUpBalance/:document', controller.topUpBalance);
 router.post('/transfer/:document', controller.transfer);
 router.get('/balance/:id', controller.balance);

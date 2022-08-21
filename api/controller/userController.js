@@ -44,7 +44,7 @@ controller.register = (req, res) => {
         (err, rows, fields) => {
             if (!err) {
                 if (rows = []) {
-                    mysqlConnection.query('INSERT INTO users SET name =?,last_name=?, nationality=?,date_birth=?,document=?,gender=?, email=?, num=?, pass=?', [name, last_name, nationality, date_birth, document, gender, email, num, pass], (err, rows, fields) => {
+                    mysqlConnection.query('INSERT INTO users SET name =?,last_name=?, nationality=?,date_birth=?,document=?,gender=?, email=?, num=?, pass=?, balance = 0', [name, last_name, nationality, date_birth, document, gender, email, num, pass], (err, rows, fields) => {
                         if (!err) {
                             res.status(200).json("Correcto calvo hijueputaXD");
                         } else {
@@ -170,7 +170,7 @@ controller.transfer = (req, res) => {
 
                                     });
                             } else {
-                                res.status(200).json('HUBO UN ERROR PAPU', err);
+                                res.status(200).json('El usuario al que intenta ingresar la plata no está registrado', err);
                             }
 
                         });
@@ -200,14 +200,17 @@ controller.verify = (req, res) => {
     verifyToken(req, res);
     res.json('INFORMACIÓN SECRETA PAPI NO SEA SAPO MIJO');
 };
-controller.currency = (req, res) => {
-    fetch("https://v6.exchangerate-api.com/v6/e1fb2a5953edbe689c1af854/latest/USD")
-        .then(response => response.text())
-        .then(result => {
-            let a = JSON.parse(result).conversion_rates.COP;
-            res.status(200).json(a);
-        })
-        .catch(error => console.log('error', error));
+controller.currency_list = (req, res) => {
+    const id = req.params.id;
+    mysqlConnection.query('SELECT balance FROM users WHERE id =?', [id], (err, rows, fields) => {
+        if (!err) {
+            res.status(200).json(rows[0]);
+        } else {
+            res.status(200).json('HUBO UN ERROR PAPU', err);
+        }
+    });
+
+
 };
 
 function verifyToken(req, res, next) {
