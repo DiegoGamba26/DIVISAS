@@ -204,7 +204,41 @@ controller.currency_list = (req, res) => {
     const id = req.params.id;
     mysqlConnection.query('SELECT balance FROM users WHERE id =?', [id], (err, rows, fields) => {
         if (!err) {
-            res.status(200).json(rows[0]);
+            fetch("https://v6.exchangerate-api.com/v6/e1fb2a5953edbe689c1af854/latest/COP")
+                .then(response => response.text())
+                .then(result => {
+                    console.log(result);
+                    let result_balance = rows[0]["balance"];
+                    let USD = JSON.parse(result).conversion_rates.USD;
+                    let USD2 = parseFloat(USD.toFixed(5));
+                    let result_usd = (result_balance * USD2) / 1;
+                    let GBP = JSON.parse(result).conversion_rates.GBP;
+                    let GBP2 = parseFloat(GBP.toFixed(5));
+                    let result_gbp = (result_balance * GBP2) / 1;
+                    let EUR = JSON.parse(result).conversion_rates.EUR;
+                    let EUR2 = parseFloat(EUR.toFixed(5));
+                    let result_eur = (result_balance * EUR2) / 1;
+                    let CAD = JSON.parse(result).conversion_rates.CAD;
+                    let CAD2 = parseFloat(CAD.toFixed(5));
+                    let result_cad = (result_balance * CAD2) / 1;
+                    let JPY = JSON.parse(result).conversion_rates.JPY;
+                    let JPY2 = parseFloat(JPY.toFixed(5));
+                    let result_jpy = (result_balance * JPY2) / 1;
+                    let BRL = JSON.parse(result).conversion_rates.BRL;
+                    let BRL2 = parseFloat(BRL.toFixed(5));
+                    let result_brl = (result_balance * BRL2) / 1;
+                    let MXN = JSON.parse(result).conversion_rates.MXN;
+                    let MXN2 = parseFloat(MXN.toFixed(5));
+                    let result_mxn = (result_balance * MXN2) / 1;
+                    let RUB = JSON.parse(result).conversion_rates.RUB;
+                    let RUB2 = parseFloat(RUB.toFixed(5));
+                    let result_rub = (result_balance * RUB2) / 1;
+                    res.status(200).json({ Balance: result_balance,USD: result_usd, EUR: result_eur,
+                        GBP: result_gbp, CAD: result_cad, JPY: result_jpy, BRL: result_brl,MXN: result_mxn, RUB: result_rub });
+
+                })
+                .catch(error => console.log('error', error));
+
         } else {
             res.status(200).json('HUBO UN ERROR PAPU', err);
         }
