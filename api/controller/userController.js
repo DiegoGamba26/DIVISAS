@@ -10,7 +10,7 @@ controller.list = (req, res) => {
         if (!err) {
             res.status(200).json(rows);
         } else {
-            res.status(200).json('HUBO UN ERROR PAPU', err);
+            res.status(200).json('HUBO UN ERROR PAPU');
         }
     });
 };
@@ -20,7 +20,7 @@ controller.balance = (req, res) => {
         if (!err) {
             res.status(200).json(rows[0]);
         } else {
-            res.status(200).json('HUBO UN ERROR PAPU', err);
+            res.status(200).json('HUBO UN ERROR PAPU');
         }
     });
 };
@@ -30,8 +30,8 @@ controller.historyTransactions = (req, res) => {
         if (!err) {
             res.status(200).json(rows);
         } else {
-            console.log(err);
-            res.status(200).json('HUBO UN ERROR PAPU', err);
+
+            res.status(200).json('HUBO UN ERROR PAPU');
         }
     });
 };
@@ -53,7 +53,7 @@ controller.register = (req, res) => {
                     });
                 }
             } else {
-                res.status(200).json('HUBO UN ERROR PAPU', err);
+                res.status(200).json('HUBO UN ERROR PAPU');
             }
         });
     /* */
@@ -75,26 +75,26 @@ controller.topUpBalance = (req, res) => {
                                         let last_name = rows[0]["last_name"];
                                         let country = rows[0]["nationality"];
                                         let id_transaction = rows[0]["id"];
-                                        /*console.log(id_transaction);*/
+
                                         let type = "recarga";
                                         mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document, bank, id_transaction],
                                             (err, rows, fields) => {
                                                 if (!err) {
                                                     res.status(200).json("Correcto calvo");
                                                 } else {
-                                                    res.status(200).json('HUBO UN ERROR PAPU4', err);
+                                                    res.status(200).json('HUBO UN ERROR PAPU4');
                                                 }
                                             });
                                     } else {
-                                        res.status(200).json('HUBO UN ERROR PAPU3', err);
+                                        res.status(200).json('HUBO UN ERROR PAPU3');
                                     }
                                 });
                         } else {
-                            res.status(200).json('HUBO UN ERROR PAPU2', err);
+                            res.status(200).json('HUBO UN ERROR PAPU2');
                         }
                     });
             } else {
-                res.status(200).json('HUBO UN ERROR PAPU1', err);
+                res.status(200).json('HUBO UN ERROR PAPU1');
             }
 
         });
@@ -127,7 +127,7 @@ controller.transfer = (req, res) => {
                                                                     let last_name = rows[0]["last_name"];
                                                                     let country = rows[0]["nationality"];
                                                                     let id_transaction = rows[0]["id"];
-                                                                    /*console.log(id_transaction);*/
+
                                                                     let type = "salida";
                                                                     mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document, bank, id_transaction],
                                                                         (err, rows, fields) => {
@@ -139,44 +139,43 @@ controller.transfer = (req, res) => {
                                                                                             let last_name = rows[0]["last_name"];
                                                                                             let country = rows[0]["nationality"];
                                                                                             let id_transaction = rows[0]["id"];
-                                                                                            /*console.log(id_transaction);*/
                                                                                             let type = "entrada";
                                                                                             mysqlConnection.query('INSERT INTO transactions set name=?,last_name=?,nationality=?,type=?, amount = ?, document=?, bank=?,id=?', [name, last_name, country, type, balance, document2, bank, id_transaction],
                                                                                                 (err, rows, fields) => {
                                                                                                     if (!err) {
                                                                                                         res.status(200).json("Correcto calvo");
                                                                                                     } else {
-                                                                                                        res.status(200).json('HUBO UN ERROR PAPU4', err);
+                                                                                                        res.status(200).json('HUBO UN ERROR PAPU4');
                                                                                                     }
                                                                                                 });
                                                                                         } else {
-                                                                                            res.status(200).json('HUBO UN ERROR PAPU3', err);
+                                                                                            res.status(200).json('HUBO UN ERROR PAPU3');
                                                                                         }
                                                                                     });
                                                                             } else {
-                                                                                res.status(200).json('HUBO UN ERROR PAPU4', err);
+                                                                                res.status(200).json('HUBO UN ERROR PAPU4');
                                                                             }
                                                                         });
                                                                 } else {
-                                                                    res.status(200).json('HUBO UN ERROR PAPU3', err);
+                                                                    res.status(200).json('HUBO UN ERROR PAPU3');
                                                                 }
                                                             });
                                                     }
                                                 });
                                         }
                                         else {
-                                            res.status(200).json('HUBO UN ERROR PAPU', err);
+                                            res.status(200).json('HUBO UN ERROR PAPU');
                                         }
 
                                     });
                             } else {
-                                res.status(200).json('El usuario al que intenta ingresar la plata no está registrado', err);
+                                res.status(200).json('El usuario al que intenta ingresar la plata no está registrado');
                             }
 
                         });
                 }
             } else {
-                res.status(200).json('HUBO UN ERROR PAPU', err);
+                res.status(200).json('HUBO UN ERROR PAPU');
             }
 
         });
@@ -191,7 +190,7 @@ controller.login = (req, res) => {
                 });
 
             } else {
-                res.status(200).json({ response: false, mensaje: 'Revisa tu clave y contraseña', err });
+                res.status(200).json({ response: false, mensaje: 'Revisa tu clave y contraseña' });
             }
 
         });
@@ -207,7 +206,7 @@ controller.currency_list = (req, res) => {
             fetch("https://v6.exchangerate-api.com/v6/e1fb2a5953edbe689c1af854/latest/COP")
                 .then(response => response.text())
                 .then(result => {
-                    console.log(result);
+                    console.log(rows);
                     let result_balance = rows[0]["balance"];
                     let USD = JSON.parse(result).conversion_rates.USD;
                     let USD2 = parseFloat(USD.toFixed(5));
@@ -233,14 +232,16 @@ controller.currency_list = (req, res) => {
                     let RUB = JSON.parse(result).conversion_rates.RUB;
                     let RUB2 = parseFloat(RUB.toFixed(5));
                     let result_rub = (result_balance * RUB2) / 1;
-                    res.status(200).json({ Balance: result_balance,USD: result_usd, EUR: result_eur,
-                        GBP: result_gbp, CAD: result_cad, JPY: result_jpy, BRL: result_brl,MXN: result_mxn, RUB: result_rub });
+                    res.status(200).json({
+                        Balance: result_balance, USD: result_usd, EUR: result_eur,
+                        GBP: result_gbp, CAD: result_cad, JPY: result_jpy, BRL: result_brl, MXN: result_mxn, RUB: result_rub
+                    });
 
                 })
                 .catch(error => console.log('error', error));
 
         } else {
-            res.status(200).json('HUBO UN ERROR PAPU', err);
+            res.status(200).json('HUBO UN ERROR PAPU');
         }
     });
 
@@ -256,7 +257,7 @@ function verifyToken(req, res, next) {
             const content = jwt.verify(token, 'DIEGO');
             req.data = content;
         } else {
-            res.status(200).json('HUBO UN ERROR PAPU', err);
+            res.status(200).json('HUBO UN ERROR PAPU');
         }
     }
 }
