@@ -24,6 +24,35 @@ controller.balance = (req, res) => {
         }
     });
 };
+controller.profile = (req, res) => {
+    const document = req.params.document;
+    console.log(document);
+    mysqlConnection.query('SELECT * FROM users WHERE document =?', [document], (err, rows, fields) => {
+        if (!err) {
+            res.status(200).json(rows);
+        } else {
+            res.status(200).json('HUBO UN ERROR PAPU');
+        }
+    });
+};
+
+controller.profileUpdate = (req, res) => {
+    const document = req.params.document;
+    const {
+        name, last_name, nationality, date_birth, document1,
+        gender, email, num, pass, rol
+    } = req.body;
+    console.log(document);
+    mysqlConnection.query('UPDATE users  SET name=?, last_name=?,nationality=?,date_birth=?,document=?,pass=?,rol=?,gender=?,email=? WHERE document =?', [name, last_name, nationality, date_birth, document1,
+        pass, rol, gender, email, document], (err, rows, fields) => {
+            if (!err) {
+                res.status(200).json(rows);
+            } else {
+                res.status(200).json('HUBO UN ERROR PAPU');
+            }
+        });
+};
+
 controller.historyTransactions = (req, res) => {
     const id = req.query.id;
     mysqlConnection.query('SELECT id_transactions,name,last_name,nationality,document,bank,type,amount,transaction_date FROM transactions WHERE id =? order by id_transactions asc', [id], (err, rows, fields) => {
@@ -190,7 +219,7 @@ controller.login = (req, res) => {
                 });
 
             } else {
-                res.status(200).json({ response: false, mensaje: 'Revisa tu clave y contraseña' });
+                res.status(200).json({ response: false, mensaje: 'Revisa tu usuario y contraseña' });
             }
 
         });
@@ -206,7 +235,6 @@ controller.currency_list = (req, res) => {
             fetch("https://v6.exchangerate-api.com/v6/e1fb2a5953edbe689c1af854/latest/COP")
                 .then(response => response.text())
                 .then(result => {
-                    console.log(rows);
                     let result_balance = rows[0]["balance"];
                     let USD = JSON.parse(result).conversion_rates.USD;
                     let USD2 = parseFloat(USD.toFixed(5));

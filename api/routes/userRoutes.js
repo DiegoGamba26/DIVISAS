@@ -10,6 +10,7 @@ router.get('/currency_list/:id', controller.currency_list);
 router.post('/topUpBalance/:document', controller.topUpBalance);
 router.post('/transfer/:document', controller.transfer);
 router.get('/balance/:id', controller.balance);
+router.get('/profile/:document', controller.profile);
 
 
 
