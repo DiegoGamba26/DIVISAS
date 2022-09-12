@@ -133,12 +133,15 @@ controller.transfer = (req, res) => {
     const { balance, bank, document2 } = req.body;
     mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document],
         (err, rows, fields) => {
+            if (rows == []) {
+                return res.status(200).json("No existe el documento");
+            }
             if (!err) {
                 let result = rows[0]["balance"];
                 if (balance > result) {
                     res.status(200).json("No hay fondos suficientes en su cuenta revise por favor perro hijueputa");
                 } else {
-                    mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document2],
+                    let a = mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document2],
                         (err, rows, fields) => {
                             let saldo = rows[0]["balance"];
                             if (!err) {
