@@ -141,13 +141,13 @@ controller.transfer = (req, res) => {
                 if (balance > result) {
                     res.status(200).json("No hay fondos suficientes en su cuenta revise por favor perro hijueputa");
                 } else {
-                    let a = mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document2],
+                    mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document2],
                         (err, rows, fields) => {
                             if (rows == []) {
                                 return res.status(200).json("No existe el documento");
                             }
-                            let saldo = rows[0]["balance"];
                             if (!err) {
+                                let saldo = rows[0]["balance"];
                                 mysqlConnection.query('UPDATE users set balance = ? WHERE document =?', [balance + saldo, document2],
                                     (err, rows, fields) => {
                                         if (!err) {
