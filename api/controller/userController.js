@@ -143,11 +143,12 @@ controller.transfer = (req, res) => {
                 } else {
                     mysqlConnection.query('SELECT balance FROM users WHERE document =?', [document2],
                         (err, rows, fields) => {
-                            if (rows == []) {
-                                return res.status(200).json("No existe el documento");
+                            let saldo = rows.length ? rows[0].balance : null;
+                            if (saldo == null) {
+                                return res.status(200).json("No existe el documentos");
                             }
                             if (!err) {
-                                let saldo = rows[0]["balance"];
+
                                 mysqlConnection.query('UPDATE users set balance = ? WHERE document =?', [balance + saldo, document2],
                                     (err, rows, fields) => {
                                         if (!err) {
